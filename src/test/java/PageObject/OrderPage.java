@@ -44,7 +44,7 @@ public class OrderPage {
     public void MetroStationButtonClick(){
         driver.findElement(metroStationButton).click();
     }
-    public void MetroStationSelect(String input){
+    public void MetroStationSelect(String input){            //example input: "Киевская"
       driver.findElement(By.xpath(".//div[text() = '" + input + "']")).click();
     }
     public void PhoneNumberInput(String input){
@@ -53,27 +53,37 @@ public class OrderPage {
     public void NextButtonClick(){
         driver.findElement(nextButton).click();
     }
-    public void DateSelect(String input){
+    public void DateSelect(String input){               // "05" for example
         driver.findElement(dateField).click();
         driver.findElement(By.xpath(".//div[contains(@class, 'day--0" + input + "')]")).click();
     }
-    public void RentTimeSelect(int DayCount) {
+    public void RentTimeSelect(int DayCount) {          //input from 1 to 7;
         driver.findElement(rentTimeButton).click();
-        if (DayCount == 1) {
-            driver.findElement(oneDayRentButton).click();
-        } else if (DayCount == 2) {
-            driver.findElement(twoDaysRentButton).click();
-        } else if (DayCount == 3) {
-            driver.findElement(threeDaysRentButton).click();
-        } else if (DayCount == 4) {
-            driver.findElement(fourDaysRentButton).click();
-        } else if (DayCount == 5) {
-            driver.findElement(fiveDaysRentButton).click();
-        } else if (DayCount == 6) {
-            driver.findElement(sixDaysRentButton).click();
-        } else if (DayCount == 7){
-            driver.findElement(sevenDaysRentButton).click();
-        }else Assert.fail("incorrect rent time");
+        switch (DayCount) {
+            case 1:
+                driver.findElement(oneDayRentButton).click();
+                break;
+            case 2:
+                driver.findElement(twoDaysRentButton).click();
+                break;
+            case 3:
+                driver.findElement(threeDaysRentButton).click();
+                break;
+            case 4:
+                driver.findElement(fourDaysRentButton).click();
+                break;
+            case 5:
+                driver.findElement(fiveDaysRentButton).click();
+                break;
+            case 6:
+                driver.findElement(sixDaysRentButton).click();
+                break;
+            case 7:
+                driver.findElement(sevenDaysRentButton).click();
+                break;
+            default:
+                Assert.fail("incorrect rent time");
+        }
     }
     public void SelectScooterColor(String input){
     driver.findElement(By.xpath(".//input[contains(@id, '"+input+"')]")).click();
@@ -92,5 +102,5 @@ public class OrderPage {
         String orderText = (driver.findElement(orderInformationText).getText());
         return orderText;
     }
-    //добавить оставшиеся локаторы элементов (комментарий для курьера и далее) и методы для них.
+
 }

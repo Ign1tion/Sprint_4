@@ -2,66 +2,63 @@ import PageObject.MainPage;
 import PageObject.OrderPage;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.util.concurrent.TimeUnit;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import static org.hamcrest.CoreMatchers.containsString;
 
 
-
-public class OrderTest {
+@RunWith(Parameterized.class)
+public class OrderTest extends PreSetUp {
+private final String orderButton;
+private final String firstName;
+private final String secondName;
+private final String adress;
+private final String metroStation;
+private final String phoneNumber;
+private final String date;
+private final int rentTime;
+private final String color;
+private final String courierComment;
+public OrderTest(String orderButton, String firstName, String secondName, String adress, String metroStation, String phoneNumber, String date, int rentTime, String color, String courierComment){
+    this.orderButton = orderButton;
+    this.firstName = firstName;
+    this.secondName = secondName;
+    this.adress = adress;
+    this.metroStation = metroStation;
+    this.phoneNumber = phoneNumber;
+    this.date = date;
+    this.rentTime = rentTime;
+    this.color = color;
+    this.courierComment = courierComment;
+}
+@Parameterized.Parameters
+public static Object[][] getTestData() {
+    return new Object[][] {
+            {"head", "Петя", "Пяточкин", "Сосновая 5к1", "Котельники", "96899999991", "01", 1, "black", "не звонить"},
+            {"body", "Иван", "Иванов", "Фасадная 8к6", "Киевская", "12321312311", "31", 7, "grey", "звонить в любое время"}
+    };
+}      //look for browser selection in PreSetUp class
     @Test
-    public void FirefoxOrderTest() {
-        WebDriver driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.get("https://qa-scooter.praktikum-services.ru/");
-        OrderPage objOrderPage = new OrderPage(driver);
-        MainPage objMainPage = new MainPage(driver);
-        objMainPage.HeaderOrderButtonClick(); //оформление заказа с шапки главной страницы
-        objOrderPage.FirstNameInput("Петя");
-        objOrderPage.SecondNameInput("Пяточкин");
-        objOrderPage.AdressInput("Сосновая 5к1");
-        objOrderPage.MetroStationButtonClick();
-        objOrderPage.MetroStationSelect("Котельники");
-        objOrderPage.PhoneNumberInput("96899999991");
-        objOrderPage.NextButtonClick();
-        objOrderPage.DateSelect("01"); // 01-30
-        objOrderPage.RentTimeSelect(7); // 1-7
-        objOrderPage.SelectScooterColor("black"); //"black or "grey"
-        objOrderPage.CourierCommentFiledInput("не звонить");
-        objOrderPage.OrderButtonClick();
-        objOrderPage.OrderConfirmationButtonClick();
-        MatcherAssert.assertThat(objOrderPage.GetOrderInformation(), containsString("Заказ оформлен"));
-        System.out.println(objOrderPage.GetOrderInformation());
-        driver.quit();
-    }
-
-    @Test
-    public void ChromeOrderTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.get("https://qa-scooter.praktikum-services.ru/");
-        OrderPage objOrderPage = new OrderPage(driver);
-        MainPage objMainPage = new MainPage(driver);
+    public void OrderTest() {
+        OrderPage objOrderPage = new OrderPage(webDriver);
+        MainPage objMainPage = new MainPage(webDriver);
         objMainPage.CookieAcceptance();
-        objMainPage.BodyOrderButtonClick(); //оформление заказа с тела главной страницы
-        objOrderPage.FirstNameInput("Иван");
-        objOrderPage.SecondNameInput("Иванов");
-        objOrderPage.AdressInput("Фасадная 8к6");
+        objMainPage.OrderButtonClick(orderButton);
+        objOrderPage.FirstNameInput(firstName);
+        objOrderPage.SecondNameInput(secondName);
+        objOrderPage.AdressInput(adress);
         objOrderPage.MetroStationButtonClick();
-        objOrderPage.MetroStationSelect("Киевская");
-        objOrderPage.PhoneNumberInput("12321312311");
+        objOrderPage.MetroStationSelect(metroStation);
+        objOrderPage.PhoneNumberInput(phoneNumber);
         objOrderPage.NextButtonClick();
-        objOrderPage.DateSelect("31");
-        objOrderPage.RentTimeSelect(1);
-        objOrderPage.SelectScooterColor("grey");
-        objOrderPage.CourierCommentFiledInput("звонить в любое время");
+        objOrderPage.DateSelect(date);
+        objOrderPage.RentTimeSelect(rentTime);
+        objOrderPage.SelectScooterColor(color);
+        objOrderPage.CourierCommentFiledInput(courierComment);
         objOrderPage.OrderButtonClick();
         objOrderPage.OrderConfirmationButtonClick();
         MatcherAssert.assertThat(objOrderPage.GetOrderInformation(), containsString("Заказ оформлен"));
-        System.out.println(objOrderPage.GetOrderInformation());
-        driver.quit();
     }
+
+
 }

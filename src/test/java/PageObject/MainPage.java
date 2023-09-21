@@ -136,4 +136,11 @@ public class MainPage {
     public String GetEighthButtonText() {
         return driver.findElement(eightButtonText).getText();
     }
+    public void OrderButtonClick(String button){                //input "head" for header order button or "body" for body order button;
+        if(button.equals("head")){
+            HeaderOrderButtonClick();
+        }else if(button.equals("body")){
+            BodyOrderButtonClick();
+        }else HeaderOrderButtonClick();
+    }
 }
